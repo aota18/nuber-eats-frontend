@@ -1,8 +1,14 @@
 import { ApolloError, gql, useMutation } from '@apollo/client';
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import nuberLogo from '../images/logo.svg'
 import { FormError } from '../components/form-error';
 import { loginMutation, loginMutationVariables } from '../__generated__/loginMutation';
+import { Button } from '../components/button';
+import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { authToken, isLoggedInVar } from '../apollo';
+import { LOCALSTORAGE_TOKEN } from '../constants';
 
 
 const LOGIN_MUTATION = gql`
@@ -23,16 +29,17 @@ interface ILoginForm {
 
 export default function Login() {
 
-    const {register, getValues, watch, errors, handleSubmit} = useForm<ILoginForm>();
+    const {register, getValues, watch, errors, handleSubmit, formState} = useForm<ILoginForm>({
+        mode:  "onChange"
+    });
 
     const onCompleted = (data: loginMutation) => {
         const { login: {error, ok, token}} = data;
-        if(ok){
-            console.log(token);
-        }else {
-            if(error){
 
-            }
+        if(ok && token){
+            localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+            authToken(token);
+            isLoggedInVar(true);
         }
     }
 
@@ -68,16 +75,18 @@ export default function Login() {
     }
 
     return (
-        <div className="h-screen flex items-center justify-center bg-gray-800">
-            <div className="bg-white w-full max-w-lg pt-5 pb-7 rounded-lg text-center">
-                <h3 className="text-2xl font-bold  text-gray-800">
-                    Log In
-                </h3>
-
-                <form className="grid gap-3 mt-5 px-5" onSubmit ={handleSubmit(onSubmit)}>
+        <div className="h-screen flex items-center flex-col mt-10 lg:mt-28 ">
+            <Helmet>
+                <title> Login | Nuber Eats</title>
+            </Helmet>
+            <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
+                <img src={nuberLogo} className="w-52 mb-10" />
+                <h4 className="w-full font-medium text-left text-3xl">Welcome back</h4>
+                <form className="grid gap-3 mt-5  w-full" onSubmit ={handleSubmit(onSubmit)}>
                     <input 
                         ref={register({ 
-                            required: "Email is required"
+                            required: "Email is required",
+                            pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                         })} 
                         placeholder="Email" 
                         name="email"
@@ -87,10 +96,13 @@ export default function Login() {
                     {errors.email?.message && 
                         <FormError errorMessage={errors.email?.message} />
                     }
+                    {errors.email?.type === 'pattern' && 
+                        <FormError errorMessage={"Please enter a valid email"} />
+                    }
                     <input 
                         ref={register({ 
                             required: "Password is required",
-                            minLength: 10
+      
                         })} 
                         placeholder="Password" 
                         name="password"
@@ -100,15 +112,15 @@ export default function Login() {
                     {errors.password?.message && 
                         <FormError errorMessage={errors.password?.message} />
                     }
-                    {errors.password?.type === 'minLength' && 
-                        <FormError errorMessage={"Password should be longer than 10"} />
-                    }
-                    <button className="mt-3 btn ">
-                        {loading ? "Loading ..." : "Log In"}
-                    </button>
+                  
+                    <Button canClick={formState.isValid} loading={loading} actionText={"Login"}/>
                     {loginMutationResult?.login.error && <FormError errorMessage={loginMutationResult.login.error} />}
                 </form>
+
+            <div className="mt-4 font-light">
+                New to Nuber? <Link to="/create-account" className="link"> Create an Account</Link>
             </div>
+                </div>
         </div>
     )
 }

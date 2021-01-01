@@ -2,11 +2,15 @@
 @tailwind components;
 
 .input {
-    @apply bg-gray-100 shadow-inner mb-3 py-3 px-5 rounded-lg focus:ring-2 focus:ring-green-600 focus:ring-opacity-90 focus:outline-none;
+    @apply focus:outline-none focus:border-gray-500 p-3 border border-gray-200 text-lg font-light mb-3 transition-colors;
 }
 
 .btn{
-    @apply bg-gray-800 text-white py-3 px-5 rounded-lg font-medium mt-3 hover:opacity-90 focus:outline-none;
+    @apply text-lg font-medium text-white py-4 bg-lime-600 hover:bg-lime-700 transition-colors;
+}
+
+.link{
+    @apply hover:underline text-lime-600;
 }
 @tailwind utilities;
 
