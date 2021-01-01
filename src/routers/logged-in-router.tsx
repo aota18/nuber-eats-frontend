@@ -5,14 +5,21 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom
 import { Restaurants } from '../pages/client/restaurants';
 import {Header} from '../components/header';
 import { useMe } from '../hooks/useMe';
+import { NotFound } from '../pages/404';
+import { ConfirmEmail } from '../pages/user/confirm-email';
+import { EditProfile } from '../pages/user/edit-profile';
 
 
 const ClientRoutes = [
-    
-      
-            <Route path="/" exact>
+            <Route key={1} path="/" exact>
                 <Restaurants />
-            </Route>
+            </Route>,
+            <Route key={2}  path="/confirm" exact>
+                <ConfirmEmail />
+            </Route>,
+            <Route key={3}  path="/edit-profile" exact>
+                <EditProfile />
+             </Route>
        
     
 ]
@@ -21,9 +28,6 @@ const ClientRoutes = [
 export const LoggedInRouter = () => {
 
     const {data, loading, error} = useMe();
-
-
-    console.log(data);
 
     if(!data || error || loading){
         return (
@@ -41,7 +45,9 @@ export const LoggedInRouter = () => {
         <Header email={data.me.email}/>
         <Switch>
             {data.me.role === "Client" && ClientRoutes }
-                <Redirect to="/" />
+                <Route>
+                    <NotFound />
+                </Route>
         </Switch>
     </Router>
 
