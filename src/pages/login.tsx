@@ -11,7 +11,7 @@ import { authToken, isLoggedInVar } from '../apollo';
 import { LOCALSTORAGE_TOKEN } from '../constants';
 
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
     mutation loginMutation($loginInput: LoginInput!) {
         login(input: $loginInput) {
             ok
@@ -27,7 +27,7 @@ interface ILoginForm {
 }
 
 
-export default function Login() {
+export const Login = () => {
 
     const {register, getValues, watch, errors, handleSubmit, formState} = useForm<ILoginForm>({
         mode:  "onChange"
@@ -36,6 +36,7 @@ export default function Login() {
     const onCompleted = (data: loginMutation) => {
         const { login: {error, ok, token}} = data;
 
+     
         if(ok && token){
             localStorage.setItem(LOCALSTORAGE_TOKEN, token);
             authToken(token);
