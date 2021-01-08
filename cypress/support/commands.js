@@ -33,6 +33,8 @@ Cypress.Commands.add("assertLoggedIn", () => {
 
 
 Cypress.Commands.add("login", (email, password)  => {
+    
+    cy.assertLoggedOut();
     cy.visit("/");
     cy.findByPlaceholderText(/email/i).type(email)
     cy.findByPlaceholderText("Password").type(password)
@@ -46,5 +48,5 @@ Cypress.Commands.add("login", (email, password)  => {
 
 
 Cypress.Commands.add("assertLoggedOut", () => {
-    cy.window().its("localStorage.token").should("be.null");
+    cy.window().its("localStorage.token").should("be.undefined");
 })

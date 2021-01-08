@@ -108,7 +108,7 @@ export const Restaurants = () => {
                                 name={restaurant.name}
                                 categoryName={restaurant.category?.name}
                             />
-                        )}
+                            )}
                         </div>
                     <div className="flex justify-center items-center mt-10 pb-20 ">
                         {page > 1 &&  <button onClick={onPrevPageClick} className=" focus:outline-none font-medium text-2xl">&larr;</button>}

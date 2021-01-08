@@ -12,5 +12,14 @@
 .link{
     @apply hover:underline text-lime-600;
 }
+
+.container{
+    @apply max-w-screen-2xl mx-auto;
+}
+
+.link {
+    @apply text-lime-600 hover:underline;
+}
+
 @tailwind utilities;
 

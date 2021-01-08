@@ -36,7 +36,7 @@ export const Login = () => {
     const onCompleted = (data: loginMutation) => {
         const { login: {error, ok, token}} = data;
 
-     
+        
         if(ok && token){
             localStorage.setItem(LOCALSTORAGE_TOKEN, token);
             authToken(token);
