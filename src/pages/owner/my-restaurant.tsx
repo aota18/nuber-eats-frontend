@@ -73,18 +73,20 @@ export const MyRestaurant= () => {
                 </Link>
             </div>
             <div className="mt-10">
-                 {/* {data?.myRestaurant.restaurant?.menu.length === 0 ? (<h4>Please upload a dish</h4> ) 
+                
+                 {data?.myRestaurant.restaurant?.menu.length === 0 ? (<h4>Please upload a dish</h4> ) 
                 :
                 <div className="grid mt-10 md:grid-cols-3 gap-x-5 gap-y-10">
-                    {data?.myRestaurant.restaurant?.menu.map((dish: any) => (
-                        <Dish 
+                    {data?.myRestaurant.restaurant?.menu.map((dish: any, index) => (
+                        <Dish
+                            key={index} 
                             name={dish.name} 
                             description={dish.description}
                             price={dish.price}
                         />
                     ))}
                 </div>
-                } */}
+                } 
 
                 <div className="mt-3">
                     <h4 className="text-center text-2xl font-medium">Sales</h4>
