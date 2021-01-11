@@ -152,6 +152,10 @@ export const Restaurant = () => {
 
     const triggerConfirmOrder = () => {
 
+        if(placingOrder){
+            return;
+        }
+        
         if(orderItems.length === 0){
             alert("Can't place empty order");
             return;
@@ -159,7 +163,7 @@ export const Restaurant = () => {
 
         const ok = window.confirm("You are about to place an order");
 
-        if(ok){
+        if(ok ){
             createOrderMutation({
                 variables: {
                     input: {
